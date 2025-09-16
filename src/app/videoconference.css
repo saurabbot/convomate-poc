@@ -1,0 +1,382 @@
+  /* Video Conference Theme Overrides */
+  .lk-video-conference {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+    color: #ffffff !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
+    height: 100vh !important;
+  }
+
+  /* Main video layout */
+  .lk-grid-layout-wrapper,
+  .lk-focus-layout-wrapper {
+    background: transparent !important;
+  }
+
+  .lk-grid-layout {
+    gap: 12px !important;
+    padding: 20px !important;
+  }
+
+  /* Individual participant tiles */
+  .lk-participant-tile {
+    background: rgba(40, 40, 40, 0.9) !important;
+    border-radius: 16px !important;
+    border: 2px solid rgba(80, 80, 80, 0.3) !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .lk-participant-tile:hover {
+    border-color: rgba(74, 222, 128, 0.5) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  /* Video elements */
+  .lk-participant-tile video {
+    border-radius: 14px !important;
+  }
+
+  /* Participant placeholder (when video is off) */
+  .lk-participant-placeholder {
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a) !important;
+    color: #cccccc !important;
+    border-radius: 14px !important;
+  }
+
+  /* Participant metadata (name, mute indicators) */
+  .lk-participant-metadata {
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%) !important;
+    border-radius: 0 0 14px 14px !important;
+    padding: 12px 16px !important;
+  }
+
+  .lk-participant-metadata-item {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+  }
+
+  /* Control bar at the bottom */
+  .lk-control-bar {
+    background: rgba(20, 20, 20, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(80, 80, 80, 0.3) !important;
+    padding: 16px 24px !important;
+    border-radius: 0 !important;
+  }
+
+  /* Control buttons */
+  .lk-button {
+    background: rgba(60, 60, 60, 0.8) !important;
+    border: 1px solid rgba(100, 100, 100, 0.2) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    padding: 12px 16px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    backdrop-filter: blur(10px) !important;
+  }
+
+  .lk-button:hover {
+    background: rgba(80, 80, 80, 0.9) !important;
+    border-color: rgba(120, 120, 120, 0.4) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Active/enabled buttons */
+  .lk-button.lk-button-enabled,
+  .lk-button[data-lk-enabled="true"] {
+    background: rgba(74, 222, 128, 0.2) !important;
+    border-color: rgba(74, 222, 128, 0.4) !important;
+    color: #4ade80 !important;
+  }
+
+  .lk-button.lk-button-enabled:hover,
+  .lk-button[data-lk-enabled="true"]:hover {
+    background: rgba(74, 222, 128, 0.3) !important;
+    border-color: rgba(74, 222, 128, 0.6) !important;
+  }
+
+  /* Disabled/muted buttons */
+  .lk-button.lk-button-disabled,
+  .lk-button[data-lk-enabled="false"] {
+    background: rgba(239, 68, 68, 0.2) !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    color: #ef4444 !important;
+  }
+
+  .lk-button.lk-button-disabled:hover,
+  .lk-button[data-lk-enabled="false"]:hover {
+    background: rgba(239, 68, 68, 0.3) !important;
+    border-color: rgba(239, 68, 68, 0.6) !important;
+  }
+
+  /* Leave button styling */
+  .lk-button.lk-leave-button,
+  .lk-button[data-lk-source="leave"] {
+    background: rgba(239, 68, 68, 0.8) !important;
+    border-color: rgba(239, 68, 68, 0.6) !important;
+    color: #ffffff !important;
+  }
+
+  .lk-button.lk-leave-button:hover,
+  .lk-button[data-lk-source="leave"]:hover {
+    background: rgba(220, 38, 38, 0.9) !important;
+    border-color: rgba(220, 38, 38, 0.8) !important;
+  }
+
+  /* Chat panel */
+  .lk-chat {
+    background: rgba(30, 30, 30, 0.95) !important;
+    border-left: 1px solid rgba(80, 80, 80, 0.3) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+
+  .lk-chat-header {
+    background: rgba(40, 40, 40, 0.8) !important;
+    border-bottom: 1px solid rgba(80, 80, 80, 0.3) !important;
+    color: #ffffff !important;
+    padding: 16px 20px !important;
+  }
+
+  .lk-chat-messages {
+    background: transparent !important;
+    padding: 16px !important;
+  }
+
+  .lk-chat-entry {
+    background: rgba(50, 50, 50, 0.6) !important;
+    border-radius: 12px !important;
+    margin-bottom: 12px !important;
+    padding: 12px 16px !important;
+    border: 1px solid rgba(80, 80, 80, 0.2) !important;
+  }
+
+  .lk-chat-entry-name {
+    color: #4ade80 !important;
+    font-weight: 600 !important;
+  }
+
+  .lk-chat-entry-msg {
+    color: #e5e5e5 !important;
+  }
+
+  /* Chat input */
+  .lk-chat-form {
+    background: rgba(40, 40, 40, 0.8) !important;
+    border-top: 1px solid rgba(80, 80, 80, 0.3) !important;
+    padding: 16px 20px !important;
+  }
+
+  .lk-form-control {
+    background: rgba(60, 60, 60, 0.8) !important;
+    border: 1px solid rgba(100, 100, 100, 0.3) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    padding: 12px 16px !important;
+  }
+
+  .lk-form-control:focus {
+    border-color: #4ade80 !important;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1) !important;
+  }
+
+  /* Connection quality indicator */
+  .lk-connection-quality {
+    background: rgba(0, 0, 0, 0.6) !important;
+    border-radius: 8px !important;
+    padding: 4px 8px !important;
+  }
+
+  /* Screen share styling */
+  .lk-focus-layout {
+    background: transparent !important;
+  }
+
+  .lk-focus-layout .lk-participant-tile {
+    border: 3px solid rgba(74, 222, 128, 0.4) !important;
+    box-shadow: 0 0 30px rgba(74, 222, 128, 0.2) !important;
+  }
+
+  /* Carousel layout for other participants */
+  .lk-carousel {
+    background: rgba(20, 20, 20, 0.8) !important;
+    border-top: 1px solid rgba(80, 80, 80, 0.3) !important;
+    padding: 12px !important;
+  }
+
+  .lk-carousel .lk-participant-tile {
+    min-width: 120px !important;
+    height: 90px !important;
+    margin-right: 12px !important;
+  }
+
+  /* Settings menu */
+  .lk-settings-menu-modal {
+    background: rgba(30, 30, 30, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(80, 80, 80, 0.3) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  /* Toast notifications */
+  .lk-toast {
+    background: rgba(40, 40, 40, 0.95) !important;
+    border: 1px solid rgba(80, 80, 80, 0.3) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .lk-grid-layout {
+      padding: 12px !important;
+      gap: 8px !important;
+    }
+    
+    .lk-control-bar {
+      padding: 12px 16px !important;
+    }
+    
+    .lk-participant-tile {
+      border-radius: 12px !important;
+    }
+    
+    .lk-participant-tile video {
+      border-radius: 10px !important;
+    }
+  }
+
+  /* Focus toggle button */
+  .lk-focus-toggle {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    border: 1px solid rgba(80, 80, 80, 0.4) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .lk-focus-toggle:hover {
+    background: rgba(74, 222, 128, 0.2) !important;
+    border-color: rgba(74, 222, 128, 0.4) !important;
+    color: #4ade80 !important;
+  }
+
+  /* Loading states */
+  .lk-spinner {
+    border-color: rgba(80, 80, 80, 0.3) !important;
+    border-top-color: #4ade80 !important;
+  }
+
+  /* Track muted indicators */
+  .lk-track-muted-indicator {
+    background: rgba(239, 68, 68, 0.8) !important;
+    border-radius: 6px !important;
+    padding: 4px 6px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+  }
+
+  /* Enhanced participant name styling */
+  .lk-participant-name {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+    margin-left: 8px !important;
+  }
+
+  /* Microphone muted indicator */
+  .lk-track-muted-indicator[data-source="microphone"] {
+    background: rgba(239, 68, 68, 0.9) !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+  }
+
+  /* Screen share indicator */
+  .lk-screen-share-indicator {
+    background: rgba(74, 222, 128, 0.8) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 4px 8px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+  }
+
+  /* Connection state toast */
+  .lk-connection-state-toast {
+    background: rgba(40, 40, 40, 0.95) !important;
+    border: 1px solid rgba(80, 80, 80, 0.3) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    padding: 12px 16px !important;
+  }
+
+  /* Enhance button icons */
+  .lk-button svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) !important;
+  }
+
+  /* Add subtle animation to participant tiles */
+  .lk-participant-tile {
+    animation: fadeInUp 0.3s ease-out !important;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Enhanced control bar layout */
+  .lk-control-bar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+
+  /* Make the leave button more prominent */
+  .lk-button.lk-disconnect-button,
+  .lk-button[data-lk-unpin="true"] {
+    background: linear-gradient(45deg, #ef4444, #dc2626) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+  }
+
+  .lk-button.lk-disconnect-button:hover,
+  .lk-button[data-lk-unpin="true"]:hover {
+    background: linear-gradient(45deg, #dc2626, #b91c1c) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4) !important;
+  }

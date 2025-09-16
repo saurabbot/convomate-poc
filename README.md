@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Convomate - AI-Powered Content Analysis Platform
+
+A modern, highly scalable Next.js application for processing URLs, extracting content, and enabling AI-powered conversations about the analyzed data.
+
+## Features
+
+- **URL Processing**: Extract and analyze content from any URL
+- **AI Agent Integration**: Real-time video conferencing with AI agents
+- **Modern UI/UX**: Beautiful, responsive design with smooth animations
+- **Type Safety**: Full TypeScript implementation
+- **Performance Optimized**: Built with modern web standards and best practices
+- **Error Handling**: Comprehensive error boundaries and fallback UI
+- **Accessibility**: WCAG compliant design patterns
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS with custom animations
+- **Icons**: Lucide React
+- **State Management**: React Hooks
+- **API**: Next.js API Routes
+- **Deployment**: Vercel-ready
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repo-url>
+cd nextjs_poc
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   │   └── url/process/   # URL processing endpoint
+│   ├── agent-room/        # Video conferencing pages
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx          # Home page
+│   ├── loading.tsx       # Global loading UI
+│   ├── error.tsx         # Global error UI
+│   └── not-found.tsx     # 404 page
+├── components/            # Reusable components
+│   ├── ConvomateLogo.tsx # Brand logo component
+│   ├── ErrorBoundary.tsx # Error handling
+│   └── LoadingSpinner.tsx # Loading states
+└── utils/                # Utility functions
+    └── roomUtils.ts      # Room ID generation
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### POST /api/url/process
 
-## Deploy on Vercel
+Processes a URL and extracts metadata.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Request Body:**
+```json
+{
+  "url": "https://example.com"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Response:**
+```json
+{
+  "success": true,
+  "metadata": {
+    "domain": "example.com",
+    "title": "Content from example.com",
+    "description": "URL processed successfully"
+  }
+}
+```
+
+## Features in Detail
+
+### URL Processing
+- Validates URL format
+- Extracts domain information
+- Provides real-time feedback
+- Error handling for invalid/unreachable URLs
+
+### Agent Room
+- Dynamic room ID generation
+- Video/audio controls simulation
+- Real-time chat interface
+- Responsive design for all devices
+
+### Performance Optimizations
+- Image optimization with WebP/AVIF support
+- Component lazy loading
+- Bundle size optimization
+- SEO-friendly metadata
+
+### Security
+- CSP headers
+- XSS protection
+- CSRF protection
+- Secure headers configuration
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+
+## Environment Variables
+
+Create a `.env.local` file for local development:
+
+```env
+# Add your environment variables here
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+## Deployment
+
+This application is optimized for deployment on Vercel:
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy with zero configuration
+
+For other platforms, build the application:
+
+```bash
+npm run build
+npm run start
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support and questions, please open an issue in the GitHub repository.
