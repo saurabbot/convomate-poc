@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 const CONN_DETAILS_ENDPOINT = "/api/livekit/connection-details";
 
-export function AgentRoom() {
+export default function AgentRoom() {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
@@ -340,5 +340,3 @@ export function AgentRoom() {
     </div>
   );
 }
-
-export default AgentRoom;
