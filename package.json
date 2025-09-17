@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@livekit/components-react": "^2.9.0",
+    "@livekit/components-react": "^2.8.1",
     "@livekit/components-styles": "^1.1.5",
     "@livekit/krisp-noise-filter": "^0.2.16",
     "@pinecone-database/pinecone": "^6.1.2",
@@ -29,7 +29,7 @@
     "framer-motion": "^12.23.12",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
-    "livekit-client": "^2.9.9",
+    "livekit-client": "^2.8.1",
     "livekit-server-sdk": "^2.11.0",
     "lucide-react": "^0.544.0",
     "next": "15.5.3",

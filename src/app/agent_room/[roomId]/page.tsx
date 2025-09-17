@@ -41,14 +41,14 @@ export default function AgentRoom() {
       setIsCheckingPermissions(true);
 
       // Check if we're in a browser environment
-      if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      if (typeof window === 'undefined' || !window.navigator) {
         return;
       }
 
-      const nav = navigator as Navigator;
+      const nav = window.navigator;
 
       // Check if Permissions API is supported
-      if ("permissions" in nav) {
+      if ("permissions" in nav && nav.permissions) {
         const cameraPermission = await nav.permissions.query({
           name: "camera" as PermissionName,
         });
@@ -90,12 +90,12 @@ export default function AgentRoom() {
       setIsCheckingPermissions(true);
 
       // Check if we're in a browser environment and mediaDevices is available
-      if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      if (typeof window === 'undefined' || !window.navigator) {
         setPermissionStatus({ camera: "denied", microphone: "denied" });
         return;
       }
 
-      const nav = navigator as Navigator;
+      const nav = window.navigator;
       
       if (!nav.mediaDevices || !nav.mediaDevices.getUserMedia) {
         setPermissionStatus({ camera: "denied", microphone: "denied" });
