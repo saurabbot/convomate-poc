@@ -40,12 +40,19 @@ export default function AgentRoom() {
     try {
       setIsCheckingPermissions(true);
 
+      // Check if we're in a browser environment
+      if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+        return;
+      }
+
+      const nav = navigator as Navigator;
+
       // Check if Permissions API is supported
-      if ("permissions" in navigator) {
-        const cameraPermission = await navigator.permissions.query({
+      if ("permissions" in nav) {
+        const cameraPermission = await nav.permissions.query({
           name: "camera" as PermissionName,
         });
-        const micPermission = await navigator.permissions.query({
+        const micPermission = await nav.permissions.query({
           name: "microphone" as PermissionName,
         });
 
@@ -56,12 +63,16 @@ export default function AgentRoom() {
       } else {
         // Fallback: try to access media directly
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
-          stream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
-          setPermissionStatus({ camera: "granted", microphone: "granted" });
+          if (nav.mediaDevices && nav.mediaDevices.getUserMedia) {
+            const stream = await nav.mediaDevices.getUserMedia({
+              video: true,
+              audio: true,
+            });
+            stream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+            setPermissionStatus({ camera: "granted", microphone: "granted" });
+          } else {
+            setPermissionStatus({ camera: "denied", microphone: "denied" });
+          }
         } catch (error) {
           console.error("Media access check failed:", error);
           setPermissionStatus({ camera: "denied", microphone: "denied" });
@@ -78,8 +89,21 @@ export default function AgentRoom() {
     try {
       setIsCheckingPermissions(true);
 
+      // Check if we're in a browser environment and mediaDevices is available
+      if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+        setPermissionStatus({ camera: "denied", microphone: "denied" });
+        return;
+      }
+
+      const nav = navigator as Navigator;
+      
+      if (!nav.mediaDevices || !nav.mediaDevices.getUserMedia) {
+        setPermissionStatus({ camera: "denied", microphone: "denied" });
+        return;
+      }
+
       // Request media access to trigger browser permission dialog
-      const stream = await navigator.mediaDevices.getUserMedia({
+      const stream = await nav.mediaDevices.getUserMedia({
         video: true,
         audio: true,
       });
