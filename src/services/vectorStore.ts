@@ -1,4 +1,3 @@
-import { ProductInterface } from "@/types/zyte.types";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { ScrapedContent } from "@prisma/client";
 import OpenAI from "openai";
@@ -14,25 +13,25 @@ export const openai = new OpenAI({
 });
 
 const logger = {
-  info: (message: string, data?: any) => {
+  info: (message: string, data?: unknown) => {
     console.log(
       `[INFO] ${new Date().toISOString()} - ${message}`,
       data ? JSON.stringify(data, null, 2) : ""
     );
   },
-  error: (message: string, error?: any) => {
+  error: (message: string, error?: unknown) => {
     console.error(
       `[ERROR] ${new Date().toISOString()} - ${message}`,
       error instanceof Error ? error.stack : error
     );
   },
-  warn: (message: string, data?: any) => {
+  warn: (message: string, data?: unknown) => {
     console.warn(
       `[WARN] ${new Date().toISOString()} - ${message}`,
       data ? JSON.stringify(data, null, 2) : ""
     );
   },
-  debug: (message: string, data?: any) => {
+  debug: (message: string, data?: unknown) => {
     if (process.env.NODE_ENV === "development") {
       console.debug(
         `[DEBUG] ${new Date().toISOString()} - ${message}`,
@@ -296,7 +295,7 @@ class ContentProcessor {
 export class VectorStore {
   private pinecone: Pinecone;
   private openai: OpenAI;
-  private index: any;
+  private index: ReturnType<typeof pinecone.Index>;
   public data: ScrapedContent | null;
 
   constructor() {
@@ -376,7 +375,7 @@ export class VectorStore {
     contentId: string,
     chunks: string[],
     embeddings: number[][]
-  ): any[] {
+  ): Array<{ id: string; values: number[]; metadata: ChunkMetadata }> {
     logger.debug("Preparing vectors", {
       chunkCount: chunks.length,
       embeddingCount: embeddings.length,
@@ -413,7 +412,7 @@ export class VectorStore {
     });
   }
 
-  private sanitizeMetadata(metadata: any): any {
+  private sanitizeMetadata(metadata: ChunkMetadata): ChunkMetadata {
     const metadataStr = JSON.stringify(metadata);
     if (metadataStr.length > PINECONE_CONFIG.maxMetadataSize) {
       logger.warn("Metadata too large, sanitizing", {
@@ -437,7 +436,7 @@ export class VectorStore {
     return metadata;
   }
 
-  private async batchUpsert(vectors: any[]): Promise<void> {
+  private async batchUpsert(vectors: Array<{ id: string; values: number[]; metadata: ChunkMetadata }>): Promise<void> {
     logger.debug("Starting batch upsert", {
       totalVectors: vectors.length,
       batchSize: PINECONE_CONFIG.batchSize,
@@ -500,7 +499,7 @@ export class VectorStore {
     }
   }
 
-  async similaritySearch(query: string, topK: number = 10): Promise<any> {
+  async similaritySearch(query: string, topK: number = 10): Promise<{ matches: Array<{ id: string; score: number; metadata: ChunkMetadata }> }> {
     if (!this.index) {
       throw new Error("Index not initialized");
     }

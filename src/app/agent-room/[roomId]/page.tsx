@@ -1,24 +1,20 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import ConvomateLogo from '@/components/ConvomateLogo'
 import { ArrowLeft, Video, VideoOff, Mic, MicOff, Phone, Settings } from 'lucide-react'
 
 export default function AgentRoom() {
-  const params = useParams()
   const router = useRouter()
-  const roomId = params.roomId as string
   
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
   const [isAudioEnabled, setIsAudioEnabled] = useState(true)
   const [isConnected, setIsConnected] = useState(false)
-  const [connectionStatus, setConnectionStatus] = useState('Connecting...')
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsConnected(true)
-      setConnectionStatus('Connected to AI Agent')
     }, 2000)
 
     return () => clearTimeout(timer)

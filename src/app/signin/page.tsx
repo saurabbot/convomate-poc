@@ -18,10 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 const Signin: React.FC = () => {
-  const router = useRouter();
   const formSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),

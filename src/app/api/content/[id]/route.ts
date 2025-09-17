@@ -69,7 +69,15 @@ export async function PUT(
     }
 
     // Handle images and videos updates
-    const updateData: any = {
+    const updateData: {
+      name: string;
+      description: string;
+      price: string;
+      mainImage: string;
+      updatedAt: Date;
+      images?: { deleteMany: Record<string, never>; create: { url: string }[] };
+      videos?: { deleteMany: Record<string, never>; create: { url: string }[] };
+    } = {
       name: name || existingContent.name,
       description: description || existingContent.description,
       price: price || existingContent.price,

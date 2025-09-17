@@ -16,7 +16,7 @@ export async function GET() {
       { user },
       { status: 200 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Authentication check failed" },
       { status: 500 }

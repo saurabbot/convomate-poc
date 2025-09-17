@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -581,15 +582,14 @@ export default function ContentEdit() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="aspect-square bg-gray-700 rounded-lg overflow-hidden">
-                    <img
+                  <div className="aspect-square bg-gray-700 rounded-lg overflow-hidden relative">
+                    <Image
                       src={formData.mainImage}
                       alt="Main image preview"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = "none";
-                      }}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      onError={() => {}}
                     />
                   </div>
                 </CardContent>

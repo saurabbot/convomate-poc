@@ -55,7 +55,7 @@ const Signup: React.FC = () => {
         const errorData = await response.json();
         toast.error(errorData.error || "Failed to create user");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred during signup");
     }
   };
