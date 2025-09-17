@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { AgentDispatchClient } from "livekit-server-sdk";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,66 +49,24 @@ export async function POST(request: NextRequest) {
     if (dispatchId) {
       console.log("dispatchId already exists!", dispatchId);
       return NextResponse.json({ success: true });
-
-      //   return NextResponse.json(
-      //     { error: "Agent dispatch already exists for the room" },
-      //     { status: 404 }
-      //   );
-
-      //   const agentJobs = dispatches.find(
-      //     (dispatch) => dispatch.agentName === agentName
-      //   )?.state?.jobs;
-      //   console.log("agentJobs:", agentJobs);
-
-      //   const agentDispatch = await agentDispatchClient.getDispatch(
-      //     dispatchId,
-      //     roomName
-      //   );
-      //   console.log("agentDispatch:", agentDispatch);
-      //   const jobs = agentDispatch?.state?.jobs;
-      //   console.log("jobs:", jobs);
-
-      //   const roomServiceClient = new RoomServiceClient(
-      //     LIVEKIT_URL,
-      //     LIVEKIT_API_KEY,
-      //     LIVEKIT_API_SECRET
-      //   );
-      //   const listParticipants = await roomServiceClient.listParticipants(
-      //     roomName
-      //   );
-      //   //   console.log("listParticipants:", listParticipants);
-      //   const participant = listParticipants.find(
-      //     (participant) =>
-      //       participant.kind === 4 &&
-      //       participant.attributes?.agentName === agentName
-      //   );
-      //   if (participant) {
-      //     // await roomServiceClient.removeParticipant(
-      //     //   roomName,
-      //     //   participant.identity
-      //     // );
-      //     // await roomServiceClient.updateParticipant()
-      //   } else {
-      //     return NextResponse.json(
-      //       { error: "Agent participant not found in the room" },
-      //       { status: 404 }
-      //     );
-      //   }
     }
 
-    // Prepare context metadata for the agent
-    // const agentMetadata = {
-    //   timestamp: new Date().toISOString(),
-    //   roomName,
-    //   ...(context && { context }),
-    //   ...(userInfo && { userInfo }),
-    //   ...(sessionData && { sessionData }),
-    // };
+    const scrapedContent = await prisma.scrapedContent.findUnique({
+      where: {
+        url: url,
+      },
+    });
+    console.log("scrapedContent", scrapedContent);
     const agentMetaData = {
       id: user?.id,
+      contentId: scrapedContent?.id,
       name: user?.name,
       url: url,
+      contentName: scrapedContent?.name,
+      price: scrapedContent?.price,
+      description: scrapedContent?.description,
     };
+    console.log("agentMetaData", agentMetaData);
 
     await agentDispatchClient.createDispatch(roomName, agentName, {
       metadata: JSON.stringify(agentMetaData),

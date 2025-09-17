@@ -103,17 +103,17 @@ export default function ContentEdit() {
   }, [contentId, fetchContent]);
 
   const handleInputChange = (field: string, value: string, index?: number) => {
-    if (field === 'images' && index !== undefined) {
+    if (field === "images" && index !== undefined) {
       setFormData((prev) => ({
         ...prev,
-        images: prev.images.map((img, i) => 
+        images: prev.images.map((img, i) =>
           i === index ? { ...img, url: value } : img
         ),
       }));
-    } else if (field === 'videos' && index !== undefined) {
+    } else if (field === "videos" && index !== undefined) {
       setFormData((prev) => ({
         ...prev,
-        videos: prev.videos.map((vid, i) => 
+        videos: prev.videos.map((vid, i) =>
           i === index ? { ...vid, url: value } : vid
         ),
       }));
@@ -128,14 +128,14 @@ export default function ContentEdit() {
   const addImage = () => {
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, { id: `temp-${Date.now()}`, url: '' }],
+      images: [...prev.images, { id: `temp-${Date.now()}`, url: "" }],
     }));
   };
 
   const addVideo = () => {
     setFormData((prev) => ({
       ...prev,
-      videos: [...prev.videos, { id: `temp-${Date.now()}`, url: '' }],
+      videos: [...prev.videos, { id: `temp-${Date.now()}`, url: "" }],
     }));
   };
 
@@ -221,14 +221,17 @@ export default function ContentEdit() {
     });
   };
   const handleTalkToAgent = useCallback(async () => {
+    if (!content?.url || content.url === "") {
+      toast.error("Content URL not found");
+      return;
+    }
     setTimeout(() => {
       const roomId = generateRandomString();
       router.push(
-        `/agent_room/${roomId}?url=${encodeURIComponent(formData.name)}`
+        `/agent_room/${roomId}?url=${content?.url}`
       );
     }, 1000);
-  }, [router]);
-
+  }, [router, content?.url]);
   if (loading) {
     return (
       <DashboardLayout>
@@ -415,7 +418,10 @@ export default function ContentEdit() {
                 <CardContent>
                   <div className="space-y-3">
                     {formData.images.map((image, index) => (
-                      <div key={image.id} className="flex items-center space-x-2">
+                      <div
+                        key={image.id}
+                        className="flex items-center space-x-2"
+                      >
                         <Input
                           type="url"
                           value={image.url}
