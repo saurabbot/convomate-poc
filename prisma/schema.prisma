@@ -9,7 +9,7 @@ datasource db {
 
 model ScrapedContent {
   id        String   @id @default(cuid())
-  url       String   @unique
+  url       String   
   name      String
   mainImage String?
   description String  
@@ -20,6 +20,7 @@ model ScrapedContent {
   videos Video[]
   createdBy User @relation(fields: [createdById], references: [id])
   createdById String
+  @@unique([url, createdById])
 
 }
 model Image {
