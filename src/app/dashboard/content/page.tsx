@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -172,14 +171,16 @@ export default function Content() {
               >
                 <CardHeader className="p-0">
                   <div className="relative h-48 bg-gray-700 rounded-t-lg overflow-hidden">
-                    {item.mainImage ? (
-                      <Image
+                    {item.mainImage && item.mainImage.startsWith('http') ? (
+                      <img
                         src={item.mainImage}
                         alt={item.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        onError={() => {}}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          console.error('Image failed to load:', item.mainImage);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

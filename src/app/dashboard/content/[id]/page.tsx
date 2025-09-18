@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -583,14 +582,22 @@ export default function ContentEdit() {
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-square bg-gray-700 rounded-lg overflow-hidden relative">
-                    <Image
-                      src={formData.mainImage}
-                      alt="Main image preview"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      onError={() => {}}
-                    />
+                    {formData.mainImage && formData.mainImage.startsWith('http') ? (
+                      <img
+                        src={formData.mainImage}
+                        alt="Main image preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          console.error('Image failed to load:', formData.mainImage);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <ImageIcon className="w-16 h-16" />
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
 
     const data = await zyteService.getStructuredScrapedData(url, scrapeType);
     const { product } = data;
+    console.log(product);
     const { name, price, mainImage, images, description, videos } = product;
     const scrapedContent = await prisma.scrapedContent.create({
       data: {

@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    unoptimized: true,
+  },
   webpack: (config: any) => {
     config.resolve.alias = {
       ...config.resolve.alias,

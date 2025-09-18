@@ -50,8 +50,7 @@ export async function POST(request: NextRequest) {
       console.log("dispatchId already exists!", dispatchId);
       return NextResponse.json({ success: true });
     }
-
-    const scrapedContent = await prisma.scrapedContent.findUnique({
+    const scrapedContent = await prisma.scrapedContent.findFirst({
       where: {
         url: url,
       },
