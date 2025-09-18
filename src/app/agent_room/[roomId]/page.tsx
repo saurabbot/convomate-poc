@@ -213,7 +213,7 @@ export default function AgentRoom() {
     try {
       setAgentRequested(true);
       const response = await fetch(
-        "http://localhost:3000/api/livekit/request-agent?url=" + url,
+        "/api/livekit/request-agent?url=" + url,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
