@@ -3,6 +3,11 @@ import {
   AgentDispatchClient,
   // RoomServiceClient
 } from "livekit-server-sdk";
+import { corsHeaders, handleOptionsRequest } from "@/lib/cors";
+
+export async function OPTIONS(request: NextRequest) {
+  return handleOptionsRequest();
+}
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -16,14 +21,14 @@ export async function DELETE(request: NextRequest) {
     if (!roomName) {
       return NextResponse.json(
         { error: "Room name is required" },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
     if (!agentName) {
       return NextResponse.json(
         { error: "Agent name is required" },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -32,7 +37,7 @@ export async function DELETE(request: NextRequest) {
     if (!LIVEKIT_API_KEY || !LIVEKIT_API_SECRET || !LIVEKIT_URL) {
       return NextResponse.json(
         { error: "Server configuration is missing" },
-        { status: 500 }
+        { status: 500, headers: corsHeaders }
       );
     }
 
@@ -67,7 +72,7 @@ export async function DELETE(request: NextRequest) {
     if (dispatches.length === 0) {
       return NextResponse.json(
         { error: "No dispatches found for the room" },
-        { status: 404 }
+        { status: 404, headers: corsHeaders }
       );
     }
 
@@ -79,19 +84,19 @@ export async function DELETE(request: NextRequest) {
     } else {
       return NextResponse.json(
         { error: "Agent dispatch not found for the room" },
-        { status: 404 }
+        { status: 404, headers: corsHeaders }
       );
     }
 
     return NextResponse.json({
       status: "success",
       message: "Agent dispatch has been deleted for the room",
-    });
+    }, { headers: corsHeaders });
   } catch (error) {
     console.error("Error stopping agent:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }

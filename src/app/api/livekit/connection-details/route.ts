@@ -6,6 +6,11 @@ import {
   VideoGrant,
 } from "livekit-server-sdk";
 import { NextRequest, NextResponse } from "next/server";
+import { corsHeaders, handleOptionsRequest } from "@/lib/cors";
+
+export async function OPTIONS(request: NextRequest) {
+  return handleOptionsRequest();
+}
 
 const API_KEY = process.env.LIVEKIT_API_KEY;
 const API_SECRET = process.env.LIVEKIT_API_SECRET;
@@ -28,12 +33,13 @@ export async function GET(request: NextRequest) {
     if (typeof roomName !== "string") {
       return new NextResponse("Missing required query parameter: roomName", {
         status: 400,
+        headers: corsHeaders,
       });
     }
     if (participantName === null) {
       return new NextResponse(
         "Missing required query parameter: participantName",
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -60,13 +66,14 @@ export async function GET(request: NextRequest) {
 
     return new NextResponse(JSON.stringify(data), {
       headers: {
+        ...corsHeaders,
         "Content-Type": "application/json",
         "Set-Cookie": `${COOKIE_KEY}=${randomParticipantPostfix}; Path=/; HttpOnly; SameSite=Strict; Secure; Expires=${getCookieExpirationTime()}`,
       },
     });
   } catch (error) {
     if (error instanceof Error) {
-      return new NextResponse(error.message, { status: 500 });
+      return new NextResponse(error.message, { status: 500, headers: corsHeaders });
     }
   }
 }

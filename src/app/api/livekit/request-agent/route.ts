@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { AgentDispatchClient } from "livekit-server-sdk";
 import { prisma } from "@/lib/prisma";
+import { corsHeaders, handleOptionsRequest } from "@/lib/cors";
+
+export async function OPTIONS(request: NextRequest) {
+  return handleOptionsRequest();
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,7 +17,7 @@ export async function POST(request: NextRequest) {
     if (!room) {
       return NextResponse.json(
         { error: "Room name is required" },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -21,7 +26,7 @@ export async function POST(request: NextRequest) {
     if (!LIVEKIT_API_KEY || !LIVEKIT_API_SECRET || !LIVEKIT_URL) {
       return NextResponse.json(
         { error: "Server configuration is missing" },
-        { status: 500 }
+        { status: 500, headers: corsHeaders }
       );
     }
 
@@ -38,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (dispatches.length === 0) {
       return NextResponse.json(
         { error: "No dispatches found for the room" },
-        { status: 404 }
+        { status: 404, headers: corsHeaders }
       );
     }
 
@@ -48,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     if (dispatchId) {
       console.log("dispatchId already exists!", dispatchId);
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true }, { headers: corsHeaders });
     }
     const scrapedContent = await prisma.scrapedContent.findFirst({
       where: {
@@ -71,12 +76,12 @@ export async function POST(request: NextRequest) {
       metadata: JSON.stringify(agentMetaData),
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true }, { headers: corsHeaders });
   } catch (error) {
     console.error("Error requesting agent:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
