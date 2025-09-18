@@ -62,7 +62,7 @@ const PINECONE_CONFIG = {
   maxMetadataSize: 40960,
 };
 
-interface ChunkMetadata {
+interface ChunkMetadata extends Record<string, string | number | boolean | string[] | null | undefined> {
   url?: string;
   name?: string;
   contentId: string;
@@ -295,7 +295,7 @@ class ContentProcessor {
 export class VectorStore {
   private pinecone: Pinecone;
   private openai: OpenAI;
-  private index: ReturnType<typeof pinecone.Index>;
+  private index: ReturnType<typeof pinecone.Index> | null;
   public data: ScrapedContent | null;
 
   constructor() {
@@ -389,13 +389,13 @@ export class VectorStore {
         chunkIndex: i,
         totalChunks: chunks.length,
         description: this.data?.description?.substring(0, 512),
-        price: this.data?.price,
+        price: this.data?.price || undefined,
         text: chunk,
         textSnippet: chunk.substring(0, 1000),
         contentType: "product_info",
         timestamp: new Date().toISOString(),
         checksum: crypto.createHash("md5").update(chunk).digest("hex"),
-        mainImage: this.data?.mainImage,
+        mainImage: this.data?.mainImage || undefined,
       };
 
       const sanitizedMetadata = this.sanitizeMetadata(metadata);
@@ -455,8 +455,18 @@ export class VectorStore {
         batchIndex: i,
         batchSize: batch.length,
       });
-
-      await this.index.namespace(PINECONE_CONFIG.namespace).upsert(batch);
+      if (this.index) {
+        const sanitizedBatch = batch.map(vector => ({
+          id: vector.id,
+          values: vector.values,
+          metadata: Object.fromEntries(
+            Object.entries(vector.metadata)
+              .filter(([_, value]) => value !== undefined && value !== null)
+              .map(([key, value]) => [key, String(value)])
+          )
+        }));
+        await this.index.namespace(PINECONE_CONFIG.namespace).upsert(sanitizedBatch);
+      }
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
@@ -499,7 +509,7 @@ export class VectorStore {
     }
   }
 
-  async similaritySearch(query: string, topK: number = 10): Promise<{ matches: Array<{ id: string; score: number; metadata: ChunkMetadata }> }> {
+  async similaritySearch(query: string, topK: number = 10): Promise<unknown> {
     if (!this.index) {
       throw new Error("Index not initialized");
     }
