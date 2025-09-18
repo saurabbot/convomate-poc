@@ -583,6 +583,7 @@ export default function ContentEdit() {
                 <CardContent>
                   <div className="aspect-square bg-gray-700 rounded-lg overflow-hidden relative">
                     {formData.mainImage && formData.mainImage.startsWith('http') ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={formData.mainImage}
                         alt="Main image preview"

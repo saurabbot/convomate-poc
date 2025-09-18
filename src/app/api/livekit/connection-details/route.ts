@@ -8,7 +8,7 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 import { corsHeaders, handleOptionsRequest } from "@/lib/cors";
 
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS() {
   return handleOptionsRequest();
 }
 

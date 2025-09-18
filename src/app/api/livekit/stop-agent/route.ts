@@ -5,7 +5,7 @@ import {
 } from "livekit-server-sdk";
 import { corsHeaders, handleOptionsRequest } from "@/lib/cors";
 
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS() {
   return handleOptionsRequest();
 }
 

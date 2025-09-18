@@ -4,7 +4,7 @@ import { AgentDispatchClient } from "livekit-server-sdk";
 import { prisma } from "@/lib/prisma";
 import { corsHeaders, handleOptionsRequest } from "@/lib/cors";
 
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS() {
   return handleOptionsRequest();
 }
 

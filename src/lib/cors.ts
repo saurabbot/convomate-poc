@@ -4,7 +4,7 @@ export const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-export function createCorsResponse(data: any, status: number = 200) {
+export function createCorsResponse(data: unknown, status: number = 200) {
   return Response.json(data, { status, headers: corsHeaders });
 }
 

@@ -461,7 +461,7 @@ export class VectorStore {
           values: vector.values,
           metadata: Object.fromEntries(
             Object.entries(vector.metadata)
-              .filter(([_, value]) => value !== undefined && value !== null)
+              .filter(([, value]) => value !== undefined && value !== null)
               .map(([key, value]) => [key, String(value)])
           )
         }));

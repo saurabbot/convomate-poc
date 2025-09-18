@@ -172,6 +172,7 @@ export default function Content() {
                 <CardHeader className="p-0">
                   <div className="relative h-48 bg-gray-700 rounded-t-lg overflow-hidden">
                     {item.mainImage && item.mainImage.startsWith('http') ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={item.mainImage}
                         alt={item.name}
