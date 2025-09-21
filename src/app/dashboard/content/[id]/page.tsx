@@ -407,7 +407,7 @@ export default function ContentEdit() {
               </CardContent>
             </Card>
 
-            {content.images.length > 0 && (
+           
               <Card className="bg-gray-800/95 border-gray-700/30">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center">
@@ -463,7 +463,6 @@ export default function ContentEdit() {
                   </div>
                 </CardContent>
               </Card>
-            )}
 
             <Card className="bg-gray-800/95 border-gray-700/30">
               <CardHeader>
