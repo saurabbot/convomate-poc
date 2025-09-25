@@ -13,35 +13,35 @@ const quickActions = [
     description: 'Extract content from any website',
     icon: Globe,
     href: '/dashboard/ingest_site',
-    gradient: 'from-green-400 to-cyan-400'
+    gradient: 'from-gray-800 to-black'
   },
   {
     title: 'View Analytics',
     description: 'Monitor your content performance',
     icon: BarChart3,
     href: '/dashboard/analytics',
-    gradient: 'from-purple-400 to-pink-400'
+    gradient: 'from-gray-700 to-gray-900'
   },
   {
     title: 'Conversations',
     description: 'Review AI conversations',
     icon: MessageSquare,
     href: '/dashboard/conversations',
-    gradient: 'from-blue-400 to-indigo-400'
+    gradient: 'from-gray-600 to-gray-800'
   },
   {
     title: 'Content Library',
     description: 'Manage your extracted content',
     icon: FileText,
     href: '/dashboard/content',
-    gradient: 'from-orange-400 to-red-400'
+    gradient: 'from-gray-900 to-black'
   },
   {
     title: 'Video Calls',
     description: 'Start AI-powered video sessions',
     icon: Video,
     href: '/dashboard/video-calls',
-    gradient: 'from-teal-400 to-green-400'
+    gradient: 'from-black to-gray-800'
   }
 ];
 
@@ -128,7 +128,7 @@ export default function Dashboard() {
                           {action.description}
                         </p>
                         <Button
-                          className={`w-full bg-gradient-to-r ${action.gradient} text-white font-semibold hover:shadow-lg transition-all duration-300`}
+                          className="w-full bg-white text-black font-semibold hover:bg-gray-100 border border-black transition-all duration-300"
                           onClick={() => window.location.href = action.href}
                         >
                           Get Started

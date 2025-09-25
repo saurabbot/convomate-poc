@@ -198,7 +198,7 @@ export default function Home() {
               <Button
                 onClick={handleSubmit}
                 disabled={!isValidUrl || isLoading}
-                className="flex-1 py-3.5 px-6 text-base font-medium bg-gradient-to-r from-gray-600 to-gray-500 text-white hover:from-gray-500 hover:to-gray-400 hover:-translate-y-0.5 hover:shadow-xl disabled:bg-gray-700 disabled:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                className="flex-1 py-3.5 px-6 text-base font-medium hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                 size="lg"
               >
                 {isLoading ? (
@@ -218,7 +218,7 @@ export default function Home() {
                 onClick={clearInput}
                 disabled={isLoading}
                 variant="outline"
-                className="py-3.5 px-6 bg-gray-700/80 text-gray-300 border-gray-600 hover:bg-gray-600/90 hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                className="py-3.5 px-6 hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                 size="lg"
               >
                 <X className="w-4 h-4" />

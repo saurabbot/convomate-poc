@@ -47,7 +47,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               variant="ghost"
               size="sm"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden text-gray-300 hover:text-white hover:bg-gray-700/50"
+              className="lg:hidden bg-white text-black hover:bg-gray-100 border border-black"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
@@ -65,7 +65,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             onClick={logout}
             variant="outline"
             size="sm"
-            className="bg-gray-700/80 border-gray-600 text-gray-300 hover:bg-gray-600/90"
+            className="bg-white text-black border-black hover:bg-gray-100"
           >
             <LogOut className="w-4 h-4 mr-2" />
             Logout

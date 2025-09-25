@@ -283,7 +283,6 @@ export default function ContentEdit() {
             <Button
               variant="outline"
               onClick={() => window.open(content.url, "_blank")}
-              className="bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-gray-700/50"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
               View Original
@@ -291,7 +290,7 @@ export default function ContentEdit() {
             <Button
               onClick={handleSave}
               disabled={saving}
-              className="bg-gradient-to-r from-green-400 to-cyan-400 text-white font-semibold hover:from-green-500 hover:to-cyan-500"
+              className="font-semibold"
             >
               {saving ? (
                 <>
@@ -308,7 +307,6 @@ export default function ContentEdit() {
             <Button
               variant="outline"
               onClick={handleTalkToAgent}
-              className="bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-gray-700/50"
             >
               <Bot className="w-4 h-4 mr-2" />
               Talk to Agent
@@ -318,7 +316,6 @@ export default function ContentEdit() {
               variant="destructive"
               onClick={handleDelete}
               disabled={deleting}
-              className="bg-red-600 hover:bg-red-700"
             >
               {deleting ? (
                 <>

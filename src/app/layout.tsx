@@ -16,10 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body
-        className="antialiased bg-gray-900 text-white"
-        style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}
-      >
+      <body className="antialiased">
         {children}
         <Toaster />
       </body>

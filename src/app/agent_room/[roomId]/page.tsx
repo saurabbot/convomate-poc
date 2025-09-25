@@ -296,14 +296,14 @@ export default function AgentRoom() {
                 <Button
                   onClick={requestPermissions}
                   disabled={isCheckingPermissions}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-white text-sm"
+                  className="flex-1 text-sm"
                   size="sm"
                 >
                   {isCheckingPermissions ? "Checking..." : "Grant Permissions"}
                 </Button>
                 <Button
                   onClick={checkPermissions}
-                  className="bg-gray-600 hover:bg-gray-700 text-white text-sm"
+                  className="text-sm"
                   size="sm"
                 >
                   🔄
@@ -326,7 +326,7 @@ export default function AgentRoom() {
             <Button
               onClick={handleBackToHome}
               variant="outline"
-              className="py-3 px-6 bg-gray-600/60 border-gray-500/30 text-gray-300 hover:bg-gray-600/80 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20 mt-4"
+              className="py-3 px-6 hover:-translate-y-0.5 hover:shadow-lg mt-4"
             >
               ← Back to Home
             </Button>
