@@ -1,11 +1,11 @@
 import logging
 import asyncio
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from PIL import Image   
 import requests
 from io import BytesIO
-from database.db import db
+import asyncpg
 import cv2
 import numpy as np
 from dotenv import load_dotenv
@@ -65,6 +65,7 @@ class ContextAgent(Agent):
         self.vector_store = vector_store
         self.job_metadata = job_metadata
         self.embeddings = None
+        self.db_pool = None
         self._initialize_embeddings()
 
     def _initialize_embeddings(self):
@@ -73,6 +74,88 @@ class ContextAgent(Agent):
             model="text-embedding-3-small",
         )
         logger.info("Initialized OpenAI embeddings with text-embedding-3-small")
+
+    async def _connect_db(self):
+        """Connect to the database using environment variables"""
+        if not self.db_pool:
+            # Debug: Log all environment variables related to our secrets
+            logger.info(f"Environment variables available: DATABASE_URL={'set' if os.environ.get('DATABASE_URL') else 'NOT SET'}")
+            logger.info(f"Environment variables available: OPENAI_API_KEY={'set' if os.environ.get('OPENAI_API_KEY') else 'NOT SET'}")
+            logger.info(f"Environment variables available: PINECONE_API_KEY={'set' if os.environ.get('PINECONE_API_KEY') else 'NOT SET'}")
+            
+            database_url = os.environ.get("DATABASE_URL")
+            if not database_url:
+                logger.error("DATABASE_URL environment variable is not available")
+                # Let's try to get it from other possible sources
+                database_url = os.environ.get("DATABASE_URL")
+                if not database_url:
+                    logger.error("DATABASE_URL not found via os.getenv either")
+                    raise ValueError("DATABASE_URL environment variable is required")
+            
+            logger.info("DATABASE_URL found, attempting to connect to database")
+            self.db_pool = await asyncpg.create_pool(
+                database_url,
+                min_size=1,
+                max_size=10,
+                command_timeout=60
+            )
+            logger.info("Database connection pool created successfully")
+    
+    async def _get_images_for_content(self, content_id: str) -> List[Dict[str, Any]]:
+        """Get all images for a specific scraped content"""
+        await self._connect_db()
+        
+        async with self.db_pool.acquire() as connection:
+            query = """
+                SELECT id, url, "createdAt", "updatedAt"
+                FROM "Image" 
+                WHERE "scrapedContentId" = $1
+                ORDER BY "createdAt" ASC
+            """
+            
+            rows = await connection.fetch(query, content_id)
+            return [dict(row) for row in rows]
+    
+    async def _get_scraped_content_with_media_info(self, content_id: str) -> Optional[Dict[str, Any]]:
+        """Get scraped content with media information"""
+        await self._connect_db()
+        
+        async with self.db_pool.acquire() as connection:
+            query = """
+                SELECT 
+                    sc.*,
+                    COUNT(DISTINCT i.id) as image_count,
+                    COUNT(DISTINCT v.id) as video_count,
+                    CASE WHEN COUNT(DISTINCT i.id) > 0 THEN true ELSE false END as has_images,
+                    CASE WHEN COUNT(DISTINCT v.id) > 0 THEN true ELSE false END as has_videos
+                FROM "ScrapedContent" sc
+                LEFT JOIN "Image" i ON sc.id = i."scrapedContentId"
+                LEFT JOIN "Video" v ON sc.id = v."scrapedContentId"
+                WHERE sc.id = $1
+                GROUP BY sc.id, sc.url, sc.name, sc."mainImage", sc.description, 
+                         sc.price, sc."createdAt", sc."updatedAt", sc."createdById"
+            """
+            
+            result = await connection.fetchrow(query, content_id)
+            
+            if result:
+                return {
+                    'id': result['id'],
+                    'url': result['url'],
+                    'name': result['name'],
+                    'mainImage': result['mainImage'],
+                    'description': result['description'],
+                    'price': result['price'],
+                    'createdAt': result['createdAt'],
+                    'updatedAt': result['updatedAt'],
+                    'createdById': result['createdById'],
+                    'image_count': result['image_count'],
+                    'video_count': result['video_count'],
+                    'has_images': result['has_images'],
+                    'has_videos': result['has_videos']
+                }
+            
+            return None
 
     async def on_enter(self):
         await self.session.generate_reply(
@@ -133,12 +216,11 @@ class ContextAgent(Agent):
             
             if not content_id:
                 return "No content ID found in metadata to fetch images"
-            await db.connect()
-            images = await db.get_images_for_content(content_id)
+            images = await self._get_images_for_content(content_id)
             logger.info(f"Found {len(images) if images else 0} images for content_id: {content_id}")
             if not images:
                 # Try to get content info to see if the content exists
-                content_info = await db.get_scraped_content_with_media_info(content_id)
+                content_info = await self._get_scraped_content_with_media_info(content_id)
                 if content_info:
                     logger.info(f"Content exists but has no images. Content: {content_info}")
                     return f"Found the property '{content_info['name']}' but it has no images to display"
@@ -311,9 +393,13 @@ Listen, this information is GOLD, and I'm telling you - properties like this don
 
 
 async def setup_vector_store():
-
     try:
-        pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
+        pinecone_api_key = os.environ.get("PINECONE_API_KEY")
+        if not pinecone_api_key:
+            logger.warning("PINECONE_API_KEY not found, vector store will be disabled")
+            return None
+            
+        pc = Pinecone(api_key=pinecone_api_key)
         index_name = "web-scraper-index-three"
         namespace = "default"
         embeddings = OpenAIEmbeddings(
@@ -375,6 +461,8 @@ def prewarm(proc: JobProcess):
 
 async def entrypoint(ctx: JobContext):
     await ctx.connect()
+    #print all environment variables
+    logger.info(f"------------------------------------------------------------------------------------------------------------------------Environment variables------------------------------------------------------------------------------------------------------------------------: {os.environ}")
     vector_store = ctx.proc.userdata.get("vector_store")
     job_metadata = None
     context_info = None
@@ -401,7 +489,7 @@ async def entrypoint(ctx: JobContext):
         llm=openai.LLM(model="gpt-4o-mini"),
         stt=deepgram.STT(model="nova-2"),
         tts=openai.TTS(voice="alloy"),
-        turn_detection=EnglishModel(),
+                # turn_detection=EnglishModel(),  # Disabled due to model download issues in cloud
     )
     await ctx.wait_for_participant()
     agent = ContextAgent(vector_store=vector_store, job_metadata=job_metadata)

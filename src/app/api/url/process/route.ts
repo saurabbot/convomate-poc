@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
             id: user?.id,
           },
         },
-        mainImage: mainImage.url || "",
+        mainImage: mainImage?.url || "",
         description,
         images: {
           create: images?.map((image) => ({ url: image.url })),
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     await vectorStore.setup();
     vectorStore.data = scrapedContent;
     await vectorStore.upsertData();
-    return NextResponse.json(scrapedContent);
+    return NextResponse.json({ success: true, data: scrapedContent });
   } catch (error) {
     console.error("Error processing URL:", error);
     return NextResponse.json(

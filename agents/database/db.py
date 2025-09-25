@@ -8,14 +8,18 @@ load_dotenv()
 
 class DatabaseManager:
     def __init__(self):
-        self.connection_string = os.getenv("DATABASE_URL")
-        if not self.connection_string:
-            raise ValueError("DATABASE_URL environment variable is required")
-        
+        self.connection_string = None
         self.pool = None
+        
+    def _ensure_connection_string(self):
+        if not self.connection_string:
+            self.connection_string = os.getenv("DATABASE_URL")
+            if not self.connection_string:
+                raise ValueError("DATABASE_URL environment variable is required")
     
     async def connect(self):
         if not self.pool:
+            self._ensure_connection_string()
             self.pool = await asyncpg.create_pool(
                 self.connection_string,
                 min_size=1,

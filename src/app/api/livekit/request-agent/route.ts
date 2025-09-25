@@ -39,20 +39,14 @@ export async function POST(request: NextRequest) {
       LIVEKIT_API_SECRET
     );
 
+    // Check if there's already an active dispatch for this agent in this room
     const dispatches = await agentDispatchClient.listDispatch(roomName);
-    if (dispatches.length === 0) {
-      return NextResponse.json(
-        { error: "No dispatches found for the room" },
-        { status: 404, headers: corsHeaders }
-      );
-    }
-
-    const dispatchId = dispatches.find(
+    const existingDispatch = dispatches.find(
       (dispatch) => dispatch.agentName === agentName
-    )?.id;
+    );
 
-    if (dispatchId) {
-      console.log("dispatchId already exists!", dispatchId);
+    if (existingDispatch) {
+      console.log("Agent dispatch already exists for this room:", existingDispatch.id);
       return NextResponse.json({ success: true }, { headers: corsHeaders });
     }
     const scrapedContent = await prisma.scrapedContent.findFirst({
